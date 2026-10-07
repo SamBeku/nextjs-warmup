@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Warm-up
 
-## Getting Started
+A tiny Next.js (App Router) application made for practice.
 
-First, run the development server:
+## Features
+
+- `/` – welcome page (Server Component) with a counter and a server message
+- `/about` – a short introduction
+- `app/components/Counter.jsx` – interactive counter (Client Component)
+- `app/components/ServerMessage.jsx` – loads a message from the API with loading and error states
+- `app/api/message/route.js` – `GET /api/message` returns `{ "message": "Hello from the Next.js backend!" }`
+
+## Running the project
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in the browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Production build:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+## What I learned
 
-To learn more about Next.js, take a look at the following resources:
+1. **What does Next.js provide beyond React alone?**
+   Next.js adds file-based routing, server rendering, Server Components and API route handlers, so the frontend and backend can live in one project. It also provides a ready build setup and optimisations such as `next/link` and `next/image`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Why does the counter need `'use client'`?**
+   The counter uses `useState` and a click handler, which only work in the browser. `'use client'` marks the component as a Client Component so its JavaScript is sent to the browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Where does the code in `app/api/message/route.js` run?**
+   It runs on the server (in Node.js), not in the user's browser.
 
-## Deploy on Vercel
+4. **How is this endpoint similar to an Express route?**
+   Like `app.get('/api/message', ...)` in Express, it handles a GET request for a specific path and sends back a JSON response. In Next.js the path comes from the folder structure and the HTTP method from the exported function name.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Why must secrets remain on the server?**
+   Everything sent to the browser can be seen by the user, so API keys or database passwords there could be stolen and misused. On the server they stay hidden and only the result is sent to the client.
